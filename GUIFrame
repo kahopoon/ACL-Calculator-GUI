@@ -1,0 +1,195 @@
+// |---------------------------------------------------------|   
+// |                                                   v1.0a |                                          
+// |                   ACL Calculator GUI                    |
+// |                                                         |
+// |                        By kaho 7/2015  www.kahopoon.net |
+// |---------------------------------------------------------|
+//  
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+class GUIFrame extends JFrame
+{
+	GUIFrame()
+	{
+		super();
+		this.setTitle("ACL Calculator");
+		
+		Container con = this.getContentPane();
+		con.setLayout(null);
+		
+		JLabel label_cp1 = new JLabel("By Kaho, Jul/2015");
+		label_cp1.setBounds(800,30,150,20);
+		con.add( label_cp1 );
+		
+		JLabel label_cp2 = new JLabel("www.github.com/kahopoon");
+		label_cp2.setBounds(80,50,150,20);
+		con.add( label_cp2 );
+		
+		JLabel label_Title_1a = new JLabel("ACL IP Address:");
+		label_Title_1a.setBounds(50,50,150,20);
+		con.add( label_Title_1a );
+		
+		JLabel label_Title_2a = new JLabel("Wildcard Mask:");
+		label_Title_2a.setBounds(50,100,150,20);
+		con.add( label_Title_2a );
+		
+		JLabel label_Title_3a = new JLabel("Target IP Address:");
+		label_Title_3a.setBounds(50,150,150,20);
+		con.add( label_Title_3a );
+		
+		JTextField input1 = new JTextField(200);
+		input1.setBounds(200,50,200,25);
+		con.add ( input1 );
+		
+		JTextField input2 = new JTextField(200);
+		input2.setBounds(200,100,200,25);
+		con.add ( input2 );
+		
+		JTextField input3 = new JTextField(200);
+		input3.setBounds(200,150,200,25);
+		con.add ( input3 );
+		
+		JLabel label_Title_1b = new JLabel("Binary:");
+		label_Title_1b.setBounds(450,50,150,20);
+		con.add( label_Title_1b );
+		
+		JLabel label_Title_2b = new JLabel("Binary:");
+		label_Title_2b.setBounds(450,100,150,20);
+		con.add( label_Title_2b );
+		
+		JLabel label_Title_3b = new JLabel("Binary:");
+		label_Title_3b.setBounds(450,150,150,20);
+		con.add( label_Title_3b );
+
+		JTextField output1 = new JTextField(300);
+		output1.setBounds(550,50,300,25);
+		output1.setEditable(false);
+		con.add ( output1 );
+		
+		JTextField output2 = new JTextField(300);
+		output2.setBounds(550,100,300,25);
+		output2.setEditable(false);
+		con.add ( output2 );
+		
+		JTextField output3 = new JTextField(300);
+		output3.setBounds(550,150,300,25);
+		output3.setEditable(false);
+		con.add ( output3 );
+		
+		JLabel labelCheck_a = new JLabel("Check");
+		labelCheck_a.setBounds(50,250,150,20);
+		con.add( labelCheck_a );
+		JLabel labelMatch_a = new JLabel("Match");
+		labelMatch_a.setBounds(50,280,150,20);
+		con.add( labelMatch_a );
+		JLabel labelPass_a = new JLabel("Pass");
+		labelPass_a.setBounds(50,310,150,20);
+		con.add( labelPass_a );
+		JLabel labelFail_a = new JLabel("Fail");
+		labelFail_a.setBounds(50,340,150,20);
+		con.add( labelFail_a );
+		
+		JLabel labelCheck_b = new JLabel("Check");
+		labelCheck_b.setBounds(50,450,150,20);
+		con.add( labelCheck_b );
+		JLabel labelMatch_b = new JLabel("Match");
+		labelMatch_b.setBounds(50,480,150,20);
+		con.add( labelMatch_b );
+		JLabel labelPass_b = new JLabel("Pass");
+		labelPass_b.setBounds(50,510,150,20);
+		con.add( labelPass_b );
+		JLabel labelFail_b = new JLabel("Fail");
+		labelFail_b.setBounds(50,540,150,20);
+		con.add( labelFail_b );
+		
+		JLabel BitNumLabel[] = new JLabel[32];
+		for (int b = 0; b < 16; b++)
+		{
+			BitNumLabel[b] = new JLabel(b + 1 + "");
+			BitNumLabel[b].setBounds(150 + (b * 50),220,20,20);
+			con.add ( BitNumLabel[b] );
+		}
+		for (int b = 16, c = 0; b < 32; b++, c++)
+		{
+			BitNumLabel[b] = new JLabel(b + 1 + "");
+			BitNumLabel[b].setBounds(150 + (c * 50),420,20,20);
+			con.add ( BitNumLabel[b] );
+		}
+		
+		JCheckBox cbCheck[] = new JCheckBox[32];
+		for (int b = 0; b < 16; b++)
+		{
+			cbCheck[b] = new JCheckBox();
+			cbCheck[b].setBounds(150 + (b * 50),250,20,20);
+			con.add ( cbCheck[b] );
+		}
+		for (int b = 16, c = 0; b < 32; b++, c++)
+		{
+			cbCheck[b] = new JCheckBox();
+			cbCheck[b].setBounds(150 + (c * 50),450,20,20);
+			con.add ( cbCheck[b] );
+		}
+		
+		JCheckBox cbMatch[] = new JCheckBox[32];
+		for (int b = 0; b < 16; b++)
+		{
+			cbMatch[b] = new JCheckBox();
+			cbMatch[b].setBounds(150 + (b * 50),280,20,20);
+			con.add ( cbMatch[b] );
+		}
+		for (int b = 16, c = 0; b < 32; b++, c++)
+		{
+			cbMatch[b] = new JCheckBox();
+			cbMatch[b].setBounds(150 + (c * 50),480,20,20);
+			con.add ( cbMatch[b] );
+		}
+		
+		Icon green = new ImageIcon("green.png");
+		JLabel GreenIcon[] = new JLabel[32];
+		for (int b = 0; b < 16; b++)
+		{
+			GreenIcon[b] = new JLabel(green);
+			GreenIcon[b].setBounds(145 + (b * 50),310,30,30);
+			GreenIcon[b].setEnabled(false);
+			con.add ( GreenIcon[b] );
+		}
+		for (int b = 16, c = 0; b < 32; b++, c++)
+		{
+			GreenIcon[b] = new JLabel(green);
+			GreenIcon[b].setBounds(145 + (c * 50),510,30,30);
+			GreenIcon[b].setEnabled(false);
+			con.add ( GreenIcon[b] );
+		}
+		
+		Icon red = new ImageIcon("red.png");
+		JLabel RedIcon[] = new JLabel[32];
+		for (int b = 0; b < 16; b++)
+		{
+			RedIcon[b] = new JLabel(red);
+			RedIcon[b].setBounds(145 + (b * 50),340,30,30);
+			RedIcon[b].setEnabled(false);
+			con.add ( RedIcon[b] );
+		}
+		for (int b = 16, c = 0; b < 32; b++, c++)
+		{
+			RedIcon[b] = new JLabel(red);
+			RedIcon[b].setBounds(145 + (c * 50),540,30,30);
+			RedIcon[b].setEnabled(false);
+			con.add ( RedIcon[b] );
+		}
+		
+		JButton buttonCal = new JButton("Calculate");
+		buttonCal.setBounds(430,600,100,50);
+		con.add ( buttonCal );
+		
+		Handler go_process = new Handler(input1, output1, input2, output2, input3, output3, cbCheck, cbMatch, GreenIcon, RedIcon);
+		buttonCal.addActionListener ( go_process );
+		
+		this.setSize(1000, 700);
+		this.setResizable(false);
+		this.setVisible(true);
+	}	
+}
