@@ -1,0 +1,196 @@
+// |---------------------------------------------------------|   
+// |                                                   v1.0a |                                          
+// |                   ACL Calculator GUI                    |
+// |                                                         |
+// |                        By kaho 7/2015  www.kahopoon.net |
+// |---------------------------------------------------------|
+//  
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+class Handler implements ActionListener
+{
+	JTextField input1, output1, input2, output2, input3, output3;
+	JCheckBox cbCheck[] = new JCheckBox[32];
+	JCheckBox cbMatch[] = new JCheckBox[32];
+	JLabel GreenIcon[] = new JLabel[32];
+	JLabel RedIcon[] = new JLabel[32];
+	
+	public void actionPerformed(ActionEvent x)
+	{
+		String networkdatabinary = "";
+		String wildcarddatabinary = "";
+		String targetdatabinary = "";
+		String inputdata = "";
+		String outputdata = "";
+		boolean sub_error = false;
+		boolean main_error = false;
+
+		for (int y = 0; y < 3; y++)
+		{
+			if (y == 0)
+			{
+				inputdata = input1.getText();
+			}
+			else if (y == 1)
+			{
+				inputdata = input2.getText();
+			}
+			else if (y == 2)
+			{
+				inputdata = input3.getText();
+			}
+			
+			if (inputdata.length() > 6)
+			{
+				for (int j = 0, k = 0; j < inputdata.length(); j++)
+				{
+					if (inputdata.charAt(j) == '.')
+					{
+						k = k + 1;
+					}
+					if (j == (inputdata.length() - 1) && k != 3)
+					{
+						sub_error = true;
+						main_error = true;
+					}
+				}
+			}
+			else if (inputdata.length() < 6)
+			{
+				sub_error = true;
+			}
+			
+			if (sub_error == false)
+			{
+				int[] octet = new int [4];
+				String[] inputnetwork = inputdata.split("\\.", 4);
+				octet[0] = Integer.parseInt(inputnetwork[0]);
+				octet[1] = Integer.parseInt(inputnetwork[1]);
+				octet[2] = Integer.parseInt(inputnetwork[2]);
+				octet[3] = Integer.parseInt(inputnetwork[3]);	
+				
+				for (int s = 0; s < 4; s++)
+				{
+					if (octet[s] < 0 || octet[s] > 255)
+					{
+						sub_error = true;
+						main_error = true;
+					}
+				}
+				
+				if (sub_error == false)
+				{
+					for (int i = 0; i < 4; i++)
+					{
+						for (int k = 0; k < 8; k++)
+						{
+							if (octet[i] >= 128 / ((int)Math.pow(2, k)))
+							{
+								outputdata = outputdata + "1";
+								octet[i] = octet[i] - (128 / ((int)Math.pow(2, k)));
+							}
+							else
+							{
+								outputdata = outputdata + "0";
+							}
+						}
+					}
+				}
+			}
+			
+			if (sub_error == false)
+			{
+				if (y == 0)
+				{
+					networkdatabinary = networkdatabinary + outputdata;
+					output1.setText(networkdatabinary);
+				}
+				else if (y == 1)
+				{
+					wildcarddatabinary = wildcarddatabinary + outputdata;
+					output2.setText(wildcarddatabinary);
+				}
+				else if (y == 2)
+				{
+					targetdatabinary = targetdatabinary + outputdata;
+					output3.setText(targetdatabinary);
+				}
+			}
+			else if (sub_error == true)
+			{
+				if (y == 0)
+				{
+					output1.setText("ACL IP Syntax Error! E.g. 192.168.1.0");
+				}
+				else if (y == 1)
+				{
+					output2.setText("Wilcard Mask Syntax Error! E.g. 0.0.0.255");
+				}
+				else if (y == 2)
+				{
+					output3.setText("IP Syntax Error! E.g. 192.168.1.1");
+				}
+			}
+			
+			inputdata = "";
+			outputdata = "";
+			sub_error = false;
+		}
+		
+		if (main_error == false)
+		{
+			for (int y = 0; y < 32; y++)
+			{
+				if (wildcarddatabinary.charAt(y) == '0')
+				{
+					cbCheck[y].setSelected(true);
+					if (networkdatabinary.charAt(y) == targetdatabinary.charAt(y))
+					{
+						cbMatch[y].setSelected(true);
+						GreenIcon[y].setEnabled(true);
+						RedIcon[y].setEnabled(false);
+					}
+					else
+					{
+						cbMatch[y].setSelected(false);
+						GreenIcon[y].setEnabled(false);
+						RedIcon[y].setEnabled(true);
+					}
+				}
+				else if (wildcarddatabinary.charAt(y) == '1')
+				{
+					cbCheck[y].setSelected(false);
+					if (networkdatabinary.charAt(y) == targetdatabinary.charAt(y))
+					{
+						cbMatch[y].setSelected(true);
+						GreenIcon[y].setEnabled(true);
+						RedIcon[y].setEnabled(false);
+					}
+					else
+					{
+						cbMatch[y].setSelected(false);
+						GreenIcon[y].setEnabled(true);
+						RedIcon[y].setEnabled(false);
+					}
+				}
+			}
+		}
+	}	
+	
+	Handler (JTextField input1_trans, JTextField output1_trans, JTextField input2_trans, JTextField output2_trans, JTextField input3_trans, JTextField output3_trans, JCheckBox cbCheck_trans[], JCheckBox cbMatch_trans[], JLabel GreenIcon_trans[], JLabel RedIcon_trans[])
+	{
+		input1 = input1_trans;
+		output1 = output1_trans;
+		input2 = input2_trans;
+		output2 = output2_trans;
+		input3 = input3_trans;
+		output3 = output3_trans;
+		cbCheck = cbCheck_trans;
+		cbMatch = cbMatch_trans;
+		GreenIcon = GreenIcon_trans;
+		RedIcon = RedIcon_trans;
+	}
+}
