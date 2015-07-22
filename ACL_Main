@@ -1,0 +1,21 @@
+// |---------------------------------------------------------|   
+// |                                                   v1.0a |                                          
+// |                   ACL Calculator GUI                    |
+// |                                                         |
+// |                        By kaho 7/2015  www.kahopoon.net |
+// |---------------------------------------------------------|
+//  
+
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+class ACL_Main
+{
+	public static void main(String[] args) throws java.io.IOException
+	{	
+		GUIFrame process = new GUIFrame();
+		process.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+}
